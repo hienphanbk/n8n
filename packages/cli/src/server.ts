@@ -312,6 +312,14 @@ export class Server extends AbstractServer {
 		const cacheOptions = inE2ETests || inDevelopment ? {} : { maxAge };
 		const { staticCacheDir } = Container.get(InstanceSettings);
 		if (frontendService) {
+			// Middleware để xử lý đường dẫn biểu tượng có chứa phân đoạn '/dist/'
+			this.app.use((req, _res, next) => {
+				if (req.path.includes('/icons/') && req.path.includes('/dist/')) {
+					req.url = req.url.replace('/dist/', '/');
+				}
+				next();
+			});
+
 			this.app.use(
 				[
 					'/icons/{@:scope/}:packageName/*path/*file.svg',
