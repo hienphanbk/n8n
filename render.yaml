@@ -63,4 +63,5 @@ services:
 
 databases:
   - name: n8n-db
-    plan: standard
+    # Các plan được hỗ trợ: free, starter, professional, business, enterprise
+    plan: free
