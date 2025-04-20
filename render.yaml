@@ -4,9 +4,11 @@ services:
     env: node
     plan: standard
     buildCommand: |
+      sudo apt-get update && sudo apt-get install -y python3 make g++ 
       npm install -g pnpm@10.2.1
+      export NODE_OPTIONS="--max-old-space-size=4096"
       pnpm install --frozen-lockfile
-      pnpm build
+      cd packages/cli && pnpm build
     startCommand: |
       cd packages/cli
       node bin/n8n.js start
