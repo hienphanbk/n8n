@@ -1,0 +1,66 @@
+services:
+  - type: web
+    name: n8n
+    env: node
+    plan: standard
+    buildCommand: |
+      npm install -g pnpm@9.1.1
+      pnpm install --frozen-lockfile
+      pnpm build
+    startCommand: |
+      cd packages/cli
+      node bin/n8n.js start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: N8N_PORT
+        value: 5678
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_HOST
+        fromService:
+          type: web
+          name: n8n
+          property: host
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase:
+          name: n8n-db
+          property: host
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase:
+          name: n8n-db
+          property: port
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase:
+          name: n8n-db
+          property: database
+      - key: DB_POSTGRESDB_USER
+        fromDatabase:
+          name: n8n-db
+          property: user
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase:
+          name: n8n-db
+          property: password
+      - key: N8N_EMAIL_MODE
+        value: smtp
+      - key: N8N_SMTP_HOST
+        sync: false
+      - key: N8N_SMTP_PORT
+        sync: false
+      - key: N8N_SMTP_USER
+        sync: false
+      - key: N8N_SMTP_PASS
+        sync: false
+      - key: N8N_SMTP_SENDER
+        sync: false
+    healthCheckPath: /healthz
+    autoDeploy: false
+
+databases:
+  - name: n8n-db
+    plan: standard
