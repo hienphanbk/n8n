@@ -53,5 +53,5 @@ services:
 databases:
   - name: n8n-db
     plan: starter
-    engine: postgres
-    version: 15
+    databaseName: n8n
+    user: n8n
