@@ -22,10 +22,12 @@ services:
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
         fromService:
+          type: postgres
           name: n8n-db
           property: host
       - key: DB_POSTGRESDB_PORT
         fromService:
+          type: postgres
           name: n8n-db
           property: port
       - key: DB_POSTGRESDB_DATABASE
@@ -34,9 +36,9 @@ services:
         value: n8n
       - key: DB_POSTGRESDB_PASSWORD
         fromService:
+          type: postgres
           name: n8n-db
           property: connectionString
-        sync: false
       - key: N8N_ENCRYPTION_KEY
         sync: false
       - key: GENERIC_TIMEZONE
