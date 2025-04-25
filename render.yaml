@@ -50,9 +50,8 @@ services:
       - key: GENERIC_TIMEZONE
         value: Asia/Ho_Chi_Minh
 
-  - type: database
-    name: n8n-db
+databases:
+  - name: n8n-db
     plan: starter
-    properties:
-      engine: postgres
-      version: 15
+    engine: postgres
+    version: 15
